@@ -1,0 +1,18 @@
+<!--Base html file will be inherited by other web pages, acting as boilerplate code used in all of the other web-pages. IN this case, I am using it as a navigation bar allowing users to efficently navigate between different parts of the website.-->
+<p>
+    <!--Provide a link for students to access the homepage-->
+    <a href="{% url 'main_quiz:index' %}">Homepage</a> -
+    <!--If user is already logged in, display the name of the user-->
+    {% if user.is_authenticated %}
+        Hello, {{ user.username }}.
+        <!--If users are authenticated, give them an option in the nav-bar to log out of the website.-->
+        <a href="{% url 'users:logout' %}">Log Out</a>
+    <!--Otherwise, if they are not authenticated, display a link allwoing the user to log in to their existing account-->
+    {% else %}
+      <a href="{% url 'users:register' %}">Student Sign Up</a> -
+      <a href="{% url 'users:login' %}"> Student Log In</a> -
+      <a href="{% url 'admin:index' %}"> Teacher Log In</a>
+    {% endif %}
+</p>
+
+{% block content %}{% endblock content %}

@@ -1,0 +1,23 @@
+<!--Extend the base.html file such that it used in the login file -->
+{% extends "main_quiz/base.html" %}
+
+
+{% block content %}
+  
+<!--If there are errors in the code, dispaly an eror message to the user, saying their username or password is incorrect-->
+  {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  <!--We want django login view to process the form, so we assign action attribute to url of login page-->
+  <form method="post" action="{% url 'users:login' %}">
+    {% csrf_token %}
+    <!--Displays the login form to the screen-->
+    {{ form.as_p }}
+    <!--Include submit button to allow users to login to the website-->
+    <button name="submit">Log In</button>
+    <!--Then redirect the user back to the home page.-->
+    <input type="hidden" name="next" value="{% url 'main_quiz:index' %}" />
+  </form>
+
+{% endblock content %}

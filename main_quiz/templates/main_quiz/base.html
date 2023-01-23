@@ -6,7 +6,9 @@
     {% if user.is_authenticated %}
         Hello, {{ user.username }}.
         <!--If users are authenticated, give them an option in the nav-bar to log out of the website.-->
-        <a href="{% url 'users:logout' %}">Log Out</a>
+        <a href="{% url 'main_quiz:practice_mode' %}">Practice Mode</a> -
+        <a href="{% url 'main_quiz:quiz_mode' %}">Quiz Mode</a> - 
+        <a href="{% url 'users:logout' %}">Log Out</a> 
     <!--Otherwise, if they are not authenticated, display a link allwoing the user to log in to their existing account-->
     {% else %}
       <a href="{% url 'users:register' %}">Student Sign Up</a> -

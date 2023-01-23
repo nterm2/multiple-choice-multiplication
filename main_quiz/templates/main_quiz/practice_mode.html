@@ -1,0 +1,14 @@
+{% extends "main_quiz/base.html" %}
+
+{% block content %}
+
+<h1>multipleChoice Multiplication - Practice Mode</h1>
+
+<ul>
+    {% for multiple in times_tables %}
+    <li><a href="#">Practice {{multiple.times_table}} times table</a></li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

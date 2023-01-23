@@ -1,0 +1,7 @@
+{% extends 'main_quiz/base.html' %}
+
+{% block content %}
+
+<h1>multipleChoice Multiplication - Quiz Mode</h1>
+<p>Currently, your weakest times table is {{ weakest_times_table.times_table }}, with your average percentage being {{ weakest_times_table.average_percentage }}%! Please click <a href="#">here</a> to practice your {{ weakest_times_table.times_table }} times tables.</p>
+{% endblock content %}

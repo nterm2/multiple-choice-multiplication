@@ -5,9 +5,9 @@
 <h3>{{ times_table.times_table }} Times Table Quiz!</h3>
  
  <form method='post' action=''>
-    {% csrf_token %}
     <ol>
       {% for q in questions %}
+      {% csrf_token %}
       <li>
         <div class="form-group">
           <label for="question">{{q.question}}</label>

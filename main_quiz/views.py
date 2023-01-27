@@ -21,7 +21,6 @@ def times_table(request, times_table_id):
     """Show a times table and all of the questions within that times table."""
     # Get individual times table object
     times_table = TimesTable.objects.get(id=times_table_id)
-    current_percentage = times_table.average_percentage
     # Get questions associated with the specific times table
     questions = Question.objects.filter(times_table__pk=times_table_id)
 
@@ -38,11 +37,14 @@ def times_table(request, times_table_id):
             actual_answer = questions[i].answer
             if int(user_answer) == actual_answer:
                 score += 1
+        current_percentage = times_table.average_percentage
         percentage = int((score / 12) * 100)
         updated_average = int((current_percentage + percentage) / 2)
         times_table.average_percentage = updated_average
         times_table.save()
-
-    context = {'times_table': times_table, 'questions': questions}
-
-    return render(request, 'main_quiz/times_table.html', context)
+        context = {'quiz_percentage': percentage}
+        return render(request, 'main_quiz/results.html', context)
+    else:
+        # GET request, build a quiz for user to complete.
+        context = {'times_table': times_table, 'questions': questions}
+        return render(request, 'main_quiz/times_table.html', context)

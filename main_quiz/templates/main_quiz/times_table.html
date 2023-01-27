@@ -1,0 +1,49 @@
+{% extends 'main_quiz/base.html' %}
+ 
+{% block content %}
+
+<h3>{{ times_table.times_table }} Times Table Quiz!</h3>
+ 
+ <form method='post' action=''>
+    {% csrf_token %}
+    <ol>
+      {% for q in questions %}
+      <li>
+        <div class="form-group">
+          <label for="question">{{q.question}}</label>
+        </div>
+        <div class="form-check">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="{{q.option_1}}" required >
+                <label class="form-check-label" for="gridRadios1">
+                    {{q.option_1}}
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="{{q.option_2}}" required>
+                <label class="form-check-label" for="gridRadios2">
+                    {{q.option_2}}
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios1" value="{{q.option_3}}" required>
+                <label class="form-check-label" for="gridRadios1">
+                    {{q.option_3}}
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="{{q.question}}" id="gridRadios2" value="{{q.option_4}}" required>
+                <label class="form-check-label" for="gridRadios2">
+                    {{q.option_4}}
+                </label>
+            </div>
+            <br>
+        </div>    
+      </li>
+      {% endfor %}
+    </ol>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+{% endblock %}

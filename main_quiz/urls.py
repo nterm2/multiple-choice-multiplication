@@ -11,5 +11,5 @@ urlpatterns = [
     path('practice-mode/', views.practice_mode, name='practice_mode'),
     path('quiz-mode/', views.quiz_mode, name='quiz_mode'),
     # Detail page for a single times table.
-    path('start-quiz/<int:times_table_id>/', views.times_table, name='times_table'),
+    path('start-quiz/<int:times_table_id>/', views.times_table, name='start_quiz'),
 ]

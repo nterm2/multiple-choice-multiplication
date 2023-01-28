@@ -6,7 +6,7 @@
 
 <ul>
     {% for multiple in times_tables %}
-    <li><a href="#">Practice {{multiple.times_table}} times table</a></li>
+    <li><a href="{% url 'main_quiz:start_quiz' multiple.times_table%}">Practice {{multiple.times_table}} times table</a></li>
     {% endfor %}
 </ul>
 

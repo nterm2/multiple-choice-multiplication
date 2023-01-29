@@ -12,4 +12,5 @@ urlpatterns = [
     path('quiz-mode/', views.quiz_mode, name='quiz_mode'),
     # Detail page for a single times table.
     path('start-quiz/<int:times_table_id>/', views.times_table, name='start_quiz'),
+    path('my-question-overview/', views.question_overview, name='question_overview'),
 ]

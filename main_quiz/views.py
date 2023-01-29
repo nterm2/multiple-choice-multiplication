@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import TimesTable, Question, QuestionOverview
-from .import int2string
+from . import int2string
 from django.contrib.auth.decorators import login_required
 
 def index(request):
@@ -28,6 +28,13 @@ def quiz_mode(request):
 
     context = {'weakest_times_table': weakest_times_table}
     return render(request, 'main_quiz/quiz_mode.html', context)
+
+@login_required
+def question_overview(request):
+    """Show question overview for a single student"""
+    overview = QuestionOverview.objects.filter(owner=request.user)[0]
+    context = {'overview': overview}
+    return render(request, 'main_quiz/question_overview.html', context)
 
 @login_required
 def times_table(request, times_table_id):

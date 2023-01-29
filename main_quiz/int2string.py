@@ -19,7 +19,7 @@ def int_to_string(integer):
         return 'nine'
     if integer == 10:
         return 'ten'
-    if integer == 12:
+    if integer == 11:
         return 'eleven'
     if integer == 12:
         return 'twelve'

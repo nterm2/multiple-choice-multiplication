@@ -3,5 +3,5 @@
 {% block content %}
 
 <h1>multipleChoice Multiplication - Quiz Mode</h1>
-<p>Currently, your weakest times table is {{ weakest_times_table.times_table }}, with your average percentage being {{ weakest_times_table.average_percentage }}%! <a href="{% url 'main_quiz:start_quiz' weakest_times_table.times_table%}"> Please click here to practice your {{ weakest_times_table.times_table }} times tables.</a></p>
+<p>Currently, your weakest times table is your {{ weakest_times_table }} times tables! <a href="{% url 'main_quiz:start_quiz' weakest_times_table%}"> Please click here to practice your {{ weakest_times_table }} times tables.</a></p>
 {% endblock content %}

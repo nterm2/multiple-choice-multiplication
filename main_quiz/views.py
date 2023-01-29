@@ -17,7 +17,15 @@ def practice_mode(request):
 @login_required
 def quiz_mode(request):
     """Determine quiz with lowest percentage, and show this to the user."""
-    weakest_times_table = TimesTable.objects.order_by('-average_percentage')[11]
+    user_question_overview = QuestionOverview.objects.filter(owner=request.user)[0]
+    percentages = []
+    for i in range(1, 13):
+        current_times_table = int2string.int_to_string(i)
+        current_avg = f"{current_times_table}_avg"
+        current_percentage = getattr(user_question_overview, current_avg)
+        percentages.append(current_percentage)
+    weakest_times_table = percentages.index(min(percentages)) + 1
+
     context = {'weakest_times_table': weakest_times_table}
     return render(request, 'main_quiz/quiz_mode.html', context)
 

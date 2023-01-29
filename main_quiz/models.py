@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User 
+from django.db.models.signals import post_save
 
 class TimesTable(models.Model):
     """Represents the values associated for a given times table."""
@@ -50,6 +51,12 @@ class QuestionOverview(models.Model):
 
     def __str__(self):
         return f'{self.owner.username}'
+
+def create_question_overview(sender, instance, created, **kwargs):
+    """Automatically create new Question overview when  a new user signs up to the platform."""
+    if created:
+        QuestionOverview.objects.create(owner=instance)
+post_save.connect(create_question_overview, sender=User)
 
 
 class Question(models.Model):

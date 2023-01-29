@@ -4,11 +4,10 @@ from django.contrib.auth.models import User
 class TimesTable(models.Model):
     """Represents the values associated for a given times table."""
     times_table = models.IntegerField()
-    average_percentage = models.IntegerField()
 
     def __str__(self):
         """Return a string representation of the TimesTable model"""
-        return f'Times Table: {self.times_table} Average Percentage: {self.average_percentage}%'
+        return f'Times Table: {self.times_table}'
 
 class QuestionOverview(models.Model):
     """Model reprsenting question overview for a student"""
@@ -41,6 +40,12 @@ class QuestionOverview(models.Model):
     
     ten_times_table = models.IntegerField(default=10)
     ten_avg = models.IntegerField(default=0)
+
+    eleven_times_table = models.IntegerField(default=11)
+    eleven_avg = models.IntegerField(default=0)
+
+    twelve_times_table = models.IntegerField(default=12)
+    twelve_avg = models.IntegerField(default=0)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

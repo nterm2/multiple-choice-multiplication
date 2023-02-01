@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import TimesTable, Question, QuestionOverview
 from . import int2string
 from django.contrib.auth.decorators import login_required
+import json
 
 def index(request):
     """The home page for mulipleChoice multiplication. Pass request object as parameter to render function, template as other parameter"""
@@ -46,6 +47,7 @@ def times_table(request, times_table_id):
     # Define attributes as strings that will later be used to modify the average times table percentage for given times table
     string_id = int2string.int_to_string(times_table_id)
     unique_avg = f'{string_id}_avg'
+    unique_avg_list = f'{string_id}_average_list'
     times_table_name = string_id.title()
 
     
@@ -62,10 +64,20 @@ def times_table(request, times_table_id):
             actual_answer = questions[i].answer
             if int(user_answer) == actual_answer:
                 score += 1
-        current_percentage = getattr(user_question_overview, unique_avg)
+        # Deals with retrieving and storing averages
+        averages_list = json.loads(getattr(user_question_overview, unique_avg_list))
+        # Ensure that all elements in list are stored as integers to prevent errors
+        averages_list = [int(average) for average in averages_list]
+        #Calculate percentage from quiz, store in list, and set new average for corresponding times table.
         percentage = int((score / 12) * 100)
-        updated_average = int((current_percentage + percentage) / 2)
-        setattr(user_question_overview, unique_avg, updated_average)
+        averages_list.append(percentage)
+        new_average = int(sum(averages_list) / len(averages_list))
+        setattr(user_question_overview, unique_avg, new_average)
+        # Save new list of percentages to database.
+        averages_json_format = json.dumps(averages_list)
+        setattr(user_question_overview, unique_avg_list, averages_json_format)
+        user_question_overview.save()
+
         user_question_overview.save()
         context = {'quiz_percentage': percentage}
         return render(request, 'main_quiz/results.html', context)

@@ -14,39 +14,52 @@ class QuestionOverview(models.Model):
     """Model reprsenting question overview for a student"""
     one_times_table = models.IntegerField(default=1)
     one_avg = models.IntegerField(default=0)
+    one_average_list = models.TextField(default='[]') 
 
     two_times_table = models.IntegerField(default=2)
     two_avg = models.IntegerField(default=0)
+    two_average_list = models.TextField(default='[]') 
 
     three_times_table = models.IntegerField(default=3)
     three_avg = models.IntegerField(default=0)
+    three_average_list = models.TextField(default='[]') 
     
     four_times_table = models.IntegerField(default=4)
     four_avg = models.IntegerField(default=0)
+    four_average_list = models.TextField(default='[]') 
     
     five_times_table = models.IntegerField(default=5)
     five_avg = models.IntegerField(default=0)
+    five_average_list = models.TextField(default='[]') 
     
     six_times_table = models.IntegerField(default=6)
     six_avg = models.IntegerField(default=0)
+    six_average_list = models.TextField(default='[]') 
     
     seven_times_table = models.IntegerField(default=7)
     seven_avg = models.IntegerField(default=0)
+    seven_average_list = models.TextField(default='[]') 
     
     eight_times_table = models.IntegerField(default=8)
     eight_avg = models.IntegerField(default=0)
+    eight_average_list = models.TextField(default='[]') 
     
     nine_times_table = models.IntegerField(default=9)
     nine_avg = models.IntegerField(default=0)
+    nine_average_list = models.TextField(default='[]') 
     
     ten_times_table = models.IntegerField(default=10)
     ten_avg = models.IntegerField(default=0)
+    ten_average_list = models.TextField(default='[]') 
 
     eleven_times_table = models.IntegerField(default=11)
     eleven_avg = models.IntegerField(default=0)
+    eleven_average_list = models.TextField(default='[]') 
 
     twelve_times_table = models.IntegerField(default=12)
     twelve_avg = models.IntegerField(default=0)
+    twelve_average_list = models.TextField(default='[]') 
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

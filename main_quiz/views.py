@@ -77,8 +77,6 @@ def times_table(request, times_table_id):
         averages_json_format = json.dumps(averages_list)
         setattr(user_question_overview, unique_avg_list, averages_json_format)
         user_question_overview.save()
-
-        user_question_overview.save()
         context = {'quiz_percentage': percentage}
         return render(request, 'main_quiz/results.html', context)
     else:

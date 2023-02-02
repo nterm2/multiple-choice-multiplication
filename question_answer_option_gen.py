@@ -2,10 +2,17 @@ from main_quiz.models import TimesTable, Question
 import random 
 
 def gen_options(answer):
-	options = [random.randint(1, 145) for i in range(4) if random.randint(1, 145) not in [answer]]
+	options = []
+	count = 0
+	while count < 3:
+		random_number = random.randint(1, 144)
+		if (random_number != answer ) and (random_number not in options):
+			options.append(random_number)
+			count += 1
+		else:
+			pass
 	options.append(answer)
-	random_pos = random.randint(0, 3)
-	options.insert(random_pos, answer)
+	random.shuffle(options)
 	return options
 
 for i in range(1, 13):

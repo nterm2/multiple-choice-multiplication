@@ -13,4 +13,6 @@ urlpatterns = [
     # Detail page for a single times table.
     path('start-quiz/<int:times_table_id>/', views.times_table, name='start_quiz'),
     path('my-question-overview/', views.question_overview, name='question_overview'),
+    path('leaderboard/<int:times_table_id>/', views.leaderboard, name='leaderboard'),
+    path('all-leaderboards/', views.all_leaderboards, name='all_leaderboards'),
 ]

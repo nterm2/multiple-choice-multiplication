@@ -1,0 +1,12 @@
+{% extends "main_quiz/base.html" %}
+{% block content%}
+
+<h1>multipleChoice Multiplication - Class Leaderboards For Each Times Table</h1>
+
+<ul>
+    {% for multiple in times_tables %}
+    <li><a href="{% url 'main_quiz:leaderboard' multiple %}">{{multiple}} Times Table Leaderboard</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

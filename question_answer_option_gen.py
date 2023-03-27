@@ -16,7 +16,7 @@ def gen_options(answer):
 	return options
 
 for i in range(1, 13):
-	current_times_table = TimesTable.objects.get(id=i)
+	current_times_table = TimesTable.objects.get(times_table=i)
 	times_table = current_times_table.times_table
 	for i in range(1, 13):
 		answer = i * times_table

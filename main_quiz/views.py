@@ -3,10 +3,43 @@ from .models import TimesTable, Question, QuestionOverview
 from . import int2string
 from django.contrib.auth.decorators import login_required
 import json
+#Import Graphing Libraries
+import plotly.express as px
 
 def index(request):
     """The home page for mulipleChoice multiplication. Pass request object as parameter to render function, template as other parameter"""
     return render(request, 'main_quiz/index.html')
+
+@login_required
+def all_leaderboards(request):
+    times_tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    context = {'times_tables': times_tables}
+    return render(request, 'main_quiz/all_leaderboards.html', context)
+
+@login_required
+def leaderboard(request, times_table_id):
+    """View that will provide the data for a leaderboard specific to a times table"""
+    all_overviews = QuestionOverview.objects.all()
+    students = []
+    class_percentages = []
+    times_table_name = f"{int2string.int_to_string(times_table_id)}_avg"
+    for overview in all_overviews:
+        owner_object = overview.owner 
+        students.append(owner_object.username)
+        # Get average percentage for relevant times table.
+        class_percentages.append(getattr(overview, times_table_name))
+    # plot_div = plot([Bar(x=students, y=class_percentages)], output_type='div')
+    fig = px.bar(
+        x=students,
+        y=class_percentages,
+        title=f"{int2string.int_to_string(times_table_id).title()} Times Table Leaderboard",
+        labels={'x': 'Students', 'y': f"Average {int2string.int_to_string(times_table_id)} times table scores (%)"}
+    )
+    fig.update_layout(yaxis_range=[0,100])
+    chart = fig.to_html()
+    context = {'chart': chart}
+    return render(request, 'main_quiz/leaderboard.html', context)
+
 
 @login_required
 def practice_mode(request):
@@ -41,7 +74,13 @@ def question_overview(request):
 def times_table(request, times_table_id):
     """Show a times table and all of the questions within that times table."""
     # Get questions associated with the specific times table
-    questions = Question.objects.filter(times_table__pk=times_table_id)
+    questions_all = Question.objects.all()
+    questions = []
+    for question in questions_all:
+        if question.times_table.times_table == times_table_id:
+            questions.append(question)
+        else:
+            pass
     # Get the question overview associated with the current user completing the quiz.
     user_question_overview = QuestionOverview.objects.filter(owner=request.user)[0]
     # Define attributes as strings that will later be used to modify the average times table percentage for given times table

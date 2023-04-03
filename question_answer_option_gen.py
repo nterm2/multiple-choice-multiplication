@@ -1,5 +1,8 @@
 from main_quiz.models import TimesTable, Question
 import random 
+# Before running this script, run python manage.py migrate
+# Then, create superuser, and from the admin panel, manually add the 1 times tables all the way to the 12 times table within the timetable model.
+# Now execute the script, and the times tables should be populated
 
 def gen_options(answer):
 	options = []

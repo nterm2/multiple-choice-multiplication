@@ -10,7 +10,11 @@
         <a href="{% url 'main_quiz:quiz_mode' %}">Quiz Mode</a> - 
         <a href="{% url 'main_quiz:question_overview' %}">My Question Overview</a> -
         <a href="{% url 'main_quiz:all_leaderboards' %}">All Leaderboards</a> -
-        <a href="{% url 'users:logout' %}">Log Out</a> 
+        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+        <form method="post" action="{% url 'users:logout' %}" id="logout-form">
+          {% csrf_token %}
+
+        </form>
     <!--Otherwise, if they are not authenticated, display a link allwoing the user to log in to their existing account-->
     {% else %}
       <a href="{% url 'users:register' %}">Student Sign Up</a> -

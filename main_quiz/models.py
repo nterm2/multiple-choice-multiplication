@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User 
 from django.db.models.signals import post_save
-
+from django.contrib.auth import get_user_model
 class TimesTable(models.Model):
     """Represents the values associated for a given times table."""
     times_table = models.IntegerField()
@@ -60,7 +60,7 @@ class QuestionOverview(models.Model):
     twelve_avg = models.IntegerField(default=0)
     twelve_average_list = models.TextField(default='[]') 
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.owner.username}'
@@ -69,7 +69,7 @@ def create_question_overview(sender, instance, created, **kwargs):
     """Automatically create new Question overview when  a new user signs up to the platform."""
     if created:
         QuestionOverview.objects.create(owner=instance)
-post_save.connect(create_question_overview, sender=User)
+post_save.connect(create_question_overview, sender=get_user_model())
 
 
 class Question(models.Model):

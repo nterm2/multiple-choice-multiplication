@@ -31,16 +31,19 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
-    # After creating main_quiz app, I have added it alongside the default django apps
+    # Local 
     'main_quiz',
-    #Additionally, I have created a users app to deal with user authentication in the program, so I must include it in the installed apps section
-    'users',
+    'authentication',
+    # Default
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Third-party
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +61,7 @@ ROOT_URLCONF = 'mcq_quiz.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,3 +136,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #My settings
 LOGIN_URL = 'users:login'
+AUTH_USER_MODEL = 'authentication.User'
+
+# Django-allauth config
+SITE_ID = 1
+LOGIN_REDIRECT_URL = "main_quiz:index"
+ACCOUNT_LOGOUT_REDIRECT = "main_quiz:index" 
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ACCOUNT_USERNAME_REQUIRED = False 
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True 
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_FORMS = {
+    'signup': 'authentication.forms.CustomSignupForm',
+}

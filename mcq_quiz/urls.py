@@ -18,7 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #Match any URL that starts with users
-    path('users/', include('users.urls')),
+    path('users/', include('allauth.urls')),
     path('', include('main_quiz.urls')),
+    
 ]

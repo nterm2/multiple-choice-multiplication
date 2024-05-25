@@ -1,5 +1,5 @@
 <!--Extend the base.html file such that it used in the login file -->
-{% extends "main_quiz/base.html" %}
+{% extends "base.html" %}
 
 
 {% block content %}
@@ -10,7 +10,7 @@
   {% endif %}
 
   <!--We want django login view to process the form, so we assign action attribute to url of login page-->
-  <form method="post" action="{% url 'users:login' %}">
+  <form method="post" action="{% url 'account_login' %}">
     {% csrf_token %}
     <!--Displays the login form to the screen-->
     {{ form.as_p }}

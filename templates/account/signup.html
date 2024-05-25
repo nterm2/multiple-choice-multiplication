@@ -1,8 +1,8 @@
-{% extends "main_quiz/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
-  <form method="post" action="{% url 'users:register' %}">
+  <form method="post" action="{% url 'account_signup' %}">
     {% csrf_token %}
     {{ form.as_p }}
 

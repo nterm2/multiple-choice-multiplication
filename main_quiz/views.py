@@ -8,7 +8,7 @@ import plotly.express as px
 
 def index(request):
     """The home page for mulipleChoice multiplication. Pass request object as parameter to render function, template as other parameter"""
-    return render(request, 'main_quiz/index.html')
+    return render(request, 'index.html')
 
 @login_required
 def all_leaderboards(request):

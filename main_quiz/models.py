@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User 
 from django.db.models.signals import post_save
 from django.contrib.auth import get_user_model
+import uuid
+from authentication.models import TeacherProfile
+
 class TimesTable(models.Model):
     """Represents the values associated for a given times table."""
     times_table = models.IntegerField()
@@ -84,3 +87,10 @@ class Question(models.Model):
     
     def __str__(self):
         return self.question
+
+class Classroom(models.Model):
+    classroom_code = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    classroom_name = models.CharField(max_length=100)
+    teacher = models.ForeignKey(TeacherProfile, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.classroom_name

@@ -153,6 +153,4 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_FORMS = {
-    'signup': 'authentication.forms.CustomSignupForm',
-}
+ACCOUNT_USER_MODEL = 'authentication.User'

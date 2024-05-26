@@ -20,3 +20,17 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+class TeacherProfile(models.Model):
+    """Model used to represent profile for teacher"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="teacher_profile")
+    teacher_name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.teacher_name.title()
+    
+class StudentProfile(models.Model):
+    """Model used to represent profile for student"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    classroom = models.ForeignKey('main_quiz.Classroom', on_delete=models.SET_NULL, null=True, blank=False)
+    

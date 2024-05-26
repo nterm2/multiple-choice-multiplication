@@ -4,7 +4,7 @@
     <a href="{% url 'main_quiz:index' %}">Homepage</a> -
     <!--If user is already logged in, display the name of the user-->
     {% if user.is_authenticated %}
-        Hello, {{ user.username }}.
+        Hello, {{ user.first_name }}.
         <!--If users are authenticated, give them an option in the nav-bar to log out of the website.-->
         <a href="{% url 'main_quiz:practice_mode' %}">Practice Mode</a> -
         <a href="{% url 'main_quiz:quiz_mode' %}">Quiz Mode</a> - 

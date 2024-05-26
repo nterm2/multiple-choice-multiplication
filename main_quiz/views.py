@@ -1,8 +1,9 @@
-from django.shortcuts import render
-from .models import TimesTable, Question, QuestionOverview
+from django.shortcuts import render, redirect
+from .models import TimesTable, Question, QuestionOverview, Classroom
 from . import int2string
 from django.contrib.auth.decorators import login_required
 import json
+from .forms import ClassroomForm
 #Import Graphing Libraries
 import plotly.express as px
 
@@ -14,7 +15,7 @@ def index(request):
 def all_leaderboards(request):
     times_tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     context = {'times_tables': times_tables}
-    return render(request, 'main_quiz/all_leaderboards.html', context)
+    return render(request, 'all_leaderboards.html', context)
 
 @login_required
 def leaderboard(request, times_table_id):
@@ -38,7 +39,7 @@ def leaderboard(request, times_table_id):
     fig.update_layout(yaxis_range=[0,100])
     chart = fig.to_html()
     context = {'chart': chart}
-    return render(request, 'main_quiz/leaderboard.html', context)
+    return render(request, 'leaderboard.html', context)
 
 
 @login_required
@@ -46,7 +47,32 @@ def practice_mode(request):
     """Show all times tables."""
     times_tables = TimesTable.objects.all()
     context = {'times_tables': times_tables}
-    return render(request, 'main_quiz/practice_mode.html', context)
+    return render(request, 'practice_mode.html', context)
+
+@login_required
+def teacher_overview(request):
+    teacher_profile = request.user.teacher_profile
+    classrooms = Classroom.objects.filter(teacher=teacher_profile)
+    print(classrooms)
+    context = {'classrooms': classrooms, 'teacher_profile': teacher_profile}
+    return render(request, 'teacher_overview.html', context)
+
+@login_required
+def create_classroom(request):
+    print(request.method)
+    if request.method == 'POST':
+        form = ClassroomForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            classroom = form.save(commit=False)
+            classroom.teacher = request.user.teacher_profile
+            classroom.save()
+        return redirect("main_quiz:teacher_overview")
+    else:
+        form = ClassroomForm()
+    
+    context = {'form': form}
+    return render(request, "add_classroom.html", context=context)
 
 @login_required
 def quiz_mode(request):
@@ -61,14 +87,14 @@ def quiz_mode(request):
     weakest_times_table = percentages.index(min(percentages)) + 1
 
     context = {'weakest_times_table': weakest_times_table}
-    return render(request, 'main_quiz/quiz_mode.html', context)
+    return render(request, 'quiz_mode.html', context)
 
 @login_required
 def question_overview(request):
     """Show question overview for a single student"""
     overview = QuestionOverview.objects.filter(owner=request.user)[0]
     context = {'overview': overview}
-    return render(request, 'main_quiz/question_overview.html', context)
+    return render(request, 'question_overview.html', context)
 
 @login_required
 def times_table(request, times_table_id):
@@ -117,8 +143,8 @@ def times_table(request, times_table_id):
         setattr(user_question_overview, unique_avg_list, averages_json_format)
         user_question_overview.save()
         context = {'quiz_percentage': percentage}
-        return render(request, 'main_quiz/results.html', context)
+        return render(request, 'results.html', context)
     else:
         # GET request, build a quiz for user to complete.
         context = {'times_table': times_table_name, 'questions': questions}
-        return render(request, 'main_quiz/times_table.html', context)
+        return render(request, 'times_table.html', context)

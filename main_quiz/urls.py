@@ -15,4 +15,6 @@ urlpatterns = [
     path('my-question-overview/', views.question_overview, name='question_overview'),
     path('leaderboard/<int:times_table_id>/', views.leaderboard, name='leaderboard'),
     path('all-leaderboards/', views.all_leaderboards, name='all_leaderboards'),
+    path('teacher-overview/', views.teacher_overview, name='teacher_overview'),
+    path('create-classroom/', views.create_classroom, name='create_classroom'),
 ]

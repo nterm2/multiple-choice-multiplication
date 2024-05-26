@@ -7,7 +7,7 @@ from .forms import StudentSignupForm
 class TeacherSignUp(SignupView):
     template_name = "account/teacher-signup.html"
     form_class = TeacherSignupForm
-    redirect_field_name = "index"
+    redirect_field_name = "teacher_overview"
     view_name = "teacher_signup"
 
 class StudentSignUp(SignupView):

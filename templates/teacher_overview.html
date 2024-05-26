@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome, {{ teacher_profile.teacher_name }}!</h1>
+    {% if classrooms %}
+        {% for classroom in classrooms %}
+            <p>{{ classroom.classroom_name }}</p>
+        {% endfor %}        
+    {% else %}
+        <p>There are no classrooms. Click below to create a classroom.</p>
+    {% endif %}
+    <a href="{% url 'main_quiz:create_classroom' %}">Create classroom</a>
+{% endblock content %}

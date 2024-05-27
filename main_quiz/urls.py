@@ -19,4 +19,5 @@ urlpatterns = [
     path('create-classroom/', views.create_classroom, name='create_classroom'),
     path('update-classroom/<int:id>/', views.update_classroom, name='update_classroom'),
     path('delete-classroom/<int:id>/', views.delete_classroom, name='delete_classroom'),
+    path('classroom-overview/<int:id>/', views.classroom_overview, name='classroom_overview'),
 ]

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ classroom.classroom_name }} Classroom</h1>
+    <p>Classroom code: {{ classroom.classroom_code }}</p>
+    {% if students %}
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Oveerview</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.user.first_name }}</td>
+                        <td>{{ student.user.last_name }}</td>
+                        <td>{{ student.user.email }}</td>
+                        <td><a href="#">View Student Overview</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No students to display for classroom overview. </p>
+        <p>Send an invite link to your students so they can join this class</p>
+    {% endif %}
+{% endblock content %}

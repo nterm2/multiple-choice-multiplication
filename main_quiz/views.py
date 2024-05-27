@@ -4,6 +4,7 @@ from . import int2string
 from django.contrib.auth.decorators import login_required
 import json
 from .forms import ClassroomForm
+from authentication.models import StudentProfile
 #Import Graphing Libraries
 import plotly.express as px
 
@@ -90,6 +91,13 @@ def delete_classroom(request, id):
         return redirect("main_quiz:teacher_overview") 
     context = {'classroom': instance}       
     return render(request, 'delete_classroom.html', context=context)
+
+@login_required
+def classroom_overview(request, id):
+    classroom = Classroom.objects.get(id=id)
+    students = StudentProfile.objects.filter(classroom=classroom)
+    context = {'classroom': classroom, 'students': students}
+    return render(request, 'classroom_overview.html', context=context)
 
 @login_required
 def quiz_mode(request):

@@ -6,7 +6,7 @@
         <h2>Here are your current classrooms:</h2>
         {% for classroom in classrooms %}
             <div>
-                <a href="#">{{ classroom.classroom_name }}</a> - <a href="{% url 'main_quiz:update_classroom' classroom.id %}">Update classroom name</a> - <a href="{% url 'main_quiz:delete_classroom' classroom.id %}">Delete classroom</a>
+                <a href="{% url 'main_quiz:classroom_overview' classroom.id %}">{{ classroom.classroom_name }}</a> - <a href="{% url 'main_quiz:update_classroom' classroom.id %}">Update classroom name</a> - <a href="{% url 'main_quiz:delete_classroom' classroom.id %}">Delete classroom</a>
             </div>
 
         {% endfor %}        

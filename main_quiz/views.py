@@ -99,6 +99,12 @@ def classroom_overview(request, id):
     context = {'classroom': classroom, 'students': students}
     return render(request, 'classroom_overview.html', context=context)
 
+@login_required 
+def student_overview(request):
+    user = request.user
+    context = {"user": user}
+    return render(request, 'student_overview.html', context=context)
+
 @login_required
 def quiz_mode(request):
     """Determine quiz with lowest percentage, and show this to the user."""

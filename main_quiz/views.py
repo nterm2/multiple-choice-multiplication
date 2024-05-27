@@ -59,10 +59,8 @@ def teacher_overview(request):
 
 @login_required
 def create_classroom(request):
-    print(request.method)
     if request.method == 'POST':
         form = ClassroomForm(request.POST)
-        print(form.is_valid())
         if form.is_valid():
             classroom = form.save(commit=False)
             classroom.teacher = request.user.teacher_profile
@@ -72,7 +70,26 @@ def create_classroom(request):
         form = ClassroomForm()
     
     context = {'form': form}
-    return render(request, "add_classroom.html", context=context)
+    return render(request, "create_classroom.html", context=context)
+
+@login_required
+def update_classroom(request, id):
+    instance = Classroom.objects.get(id=id)
+    form = ClassroomForm(request.POST or None, instance=instance)
+    if form.is_valid():
+        classroom = form.save()
+        return redirect("main_quiz:teacher_overview")        
+    context = {'form': form, 'classroom': instance}
+    return render(request, 'update_classroom.html', context=context)
+
+@login_required
+def delete_classroom(request, id):
+    instance = Classroom.objects.get(id=id)
+    if request.method == 'POST':
+        instance.delete()
+        return redirect("main_quiz:teacher_overview") 
+    context = {'classroom': instance}       
+    return render(request, 'delete_classroom.html', context=context)
 
 @login_required
 def quiz_mode(request):

@@ -3,11 +3,19 @@
 {% block content %}
     <h1>Welcome, {{ teacher_profile.teacher_name }}!</h1>
     {% if classrooms %}
+        <h2>Here are your current classrooms:</h2>
         {% for classroom in classrooms %}
-            <p>{{ classroom.classroom_name }}</p>
+            <div>
+                <a href="#">{{ classroom.classroom_name }}</a> - <a href="{% url 'main_quiz:update_classroom' classroom.id %}">Update classroom name</a> - <a href="{% url 'main_quiz:delete_classroom' classroom.id %}">Delete classroom</a>
+            </div>
+
         {% endfor %}        
     {% else %}
         <p>There are no classrooms. Click below to create a classroom.</p>
     {% endif %}
-    <a href="{% url 'main_quiz:create_classroom' %}">Create classroom</a>
+    <br>
+    <div>
+        <a href="{% url 'main_quiz:create_classroom' %}">Create classroom</a>
+    </div>
+
 {% endblock content %}

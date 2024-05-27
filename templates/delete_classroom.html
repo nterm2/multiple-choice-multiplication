@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Delete classroom</h1>
+<form method="post" action="{% url 'main_quiz:delete_classroom' classroom.id %}">
+  {% csrf_token %}
+    <p>Are you sure you want to delete {{ classroom.classroom_name}}?</p>
+    <a href="{% url 'main_quiz:teacher_overview' %}">Cancel</a>
+  <button type="submit">Delete classroom</button>
+</form>
+
+
+{% endblock %}

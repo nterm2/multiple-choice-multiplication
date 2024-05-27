@@ -17,4 +17,6 @@ urlpatterns = [
     path('all-leaderboards/', views.all_leaderboards, name='all_leaderboards'),
     path('teacher-overview/', views.teacher_overview, name='teacher_overview'),
     path('create-classroom/', views.create_classroom, name='create_classroom'),
+    path('update-classroom/<int:id>/', views.update_classroom, name='update_classroom'),
+    path('delete-classroom/<int:id>/', views.delete_classroom, name='delete_classroom'),
 ]

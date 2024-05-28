@@ -7,6 +7,6 @@
 
 <p>Hi {{ user.first_name }}, your weakest times table is your 1 times table.</p>
 
-<p><a href="#">Click here to practice your 1 times table.</a></p>
+<p><a href="{% url 'main_quiz:start_quiz' times_table.id %}">Click here to practice your 1 times table.</a></p>
 
 {% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ times_table }} Times Table Quiz</h1>
+
+    {% for question in questions %}
+        <p>Question: {{ question.question_text }}</p>
+        <div>
+            <li>
+                {{question.options.0 }}
+            </li>
+            <li>
+                {{question.options.1 }}
+            </li>
+            <li>
+                {{question.options.2 }}
+            </li>
+            <li>
+                {{question.options.3 }}
+            </li>
+        </div>
+    {% endfor %}
+{% endblock content %}

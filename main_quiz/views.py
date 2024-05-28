@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from .forms import ClassroomForm
 from authentication.models import StudentProfile
+import random
 #Import Graphing Libraries
 import plotly.express as px
 
@@ -139,55 +140,86 @@ def question_overview(request):
     context = {'overview': overview}
     return render(request, 'question_overview.html', context)
 
-@login_required
-def times_table(request, times_table_id):
-    """Show a times table and all of the questions within that times table."""
-    # Get questions associated with the specific times table
-    questions_all = Question.objects.all()
-    questions = []
-    for question in questions_all:
-        if question.times_table.times_table == times_table_id:
-            questions.append(question)
+
+def generate_options(answer):
+    """Returns list containing answer and three random, non-duplicate integers between range of 1-12 times tables (1-144)"""
+    options = []
+    count = 0
+    while count < 3:
+        random_number = random.randint(1, 144)
+        if (random_number != answer ) and (random_number not in options):
+            options.append(random_number)
+            count += 1
         else:
             pass
-    # Get the question overview associated with the current user completing the quiz.
-    user_question_overview = QuestionOverview.objects.filter(owner=request.user)[0]
-    # Define attributes as strings that will later be used to modify the average times table percentage for given times table
-    string_id = int2string.int_to_string(times_table_id)
-    unique_avg = f'{string_id}_avg'
-    unique_avg_list = f'{string_id}_average_list'
-    times_table_name = string_id.title()
+    options.append(answer)
+    random.shuffle(options)
+    return options
+
+@login_required
+def times_table(request, times_table_id):
+    times_table = TimesTable.objects.get(id=times_table_id)
+    questions = Question.objects.filter(times_table=times_table)
+    questions_custom_array = []
+    for question in questions:
+        question_dict = {}
+        question_dict["question_text"] = question.question_text
+        question_dict["answer"] = question.answer 
+        question_dict["options"] = generate_options(question.answer)
+        questions_custom_array.append(question_dict)
+    random.shuffle(questions_custom_array)
+    context = {"times_table": times_table.times_table, "questions": questions_custom_array}
+    return render(request, 'start_quiz.html', context) 
+
+# @login_required
+# def times_table(request, times_table_id):
+#     """Show a times table and all of the questions within that times table."""
+#     # Get questions associated with the specific times table
+#     questions_all = Question.objects.all()
+#     questions = []
+#     for question in questions_all:
+#         if question.times_table.times_table == times_table_id:
+#             questions.append(question)
+#         else:
+#             pass
+#     # Get the question overview associated with the current user completing the quiz.
+#     user_question_overview = QuestionOverview.objects.filter(owner=request.user)[0]
+#     # Define attributes as strings that will later be used to modify the average times table percentage for given times table
+#     string_id = int2string.int_to_string(times_table_id)
+#     unique_avg = f'{string_id}_avg'
+#     unique_avg_list = f'{string_id}_average_list'
+#     times_table_name = string_id.title()
 
     
-    if request.method == 'POST':
-        # Retrieve list answers from users form when they submit it
-        user_answers = dict(request.POST)
-        del user_answers['csrfmiddlewaretoken']
-        user_answers = user_answers.values()
-        user_answers = sum(user_answers, [])
-        # Now they can be compared against the answers for the questions, and a percentage can be calculated.
-        score = 0
-        for i in range(12):
-            user_answer = user_answers[i]
-            actual_answer = questions[i].answer
-            if int(user_answer) == actual_answer:
-                score += 1
-        # Deals with retrieving and storing averages
-        averages_list = json.loads(getattr(user_question_overview, unique_avg_list))
-        # Ensure that all elements in list are stored as integers to prevent errors
-        averages_list = [int(average) for average in averages_list]
-        #Calculate percentage from quiz, store in list, and set new average for corresponding times table.
-        percentage = int((score / 12) * 100)
-        averages_list.append(percentage)
-        new_average = int(sum(averages_list) / len(averages_list))
-        setattr(user_question_overview, unique_avg, new_average)
-        # Save new list of percentages to database.
-        averages_json_format = json.dumps(averages_list)
-        setattr(user_question_overview, unique_avg_list, averages_json_format)
-        user_question_overview.save()
-        context = {'quiz_percentage': percentage}
-        return render(request, 'results.html', context)
-    else:
-        # GET request, build a quiz for user to complete.
-        context = {'times_table': times_table_name, 'questions': questions}
-        return render(request, 'times_table.html', context)
+#     if request.method == 'POST':
+#         # Retrieve list answers from users form when they submit it
+#         user_answers = dict(request.POST)
+#         del user_answers['csrfmiddlewaretoken']
+#         user_answers = user_answers.values()
+#         user_answers = sum(user_answers, [])
+#         # Now they can be compared against the answers for the questions, and a percentage can be calculated.
+#         score = 0
+#         for i in range(12):
+#             user_answer = user_answers[i]
+#             actual_answer = questions[i].answer
+#             if int(user_answer) == actual_answer:
+#                 score += 1
+#         # Deals with retrieving and storing averages
+#         averages_list = json.loads(getattr(user_question_overview, unique_avg_list))
+#         # Ensure that all elements in list are stored as integers to prevent errors
+#         averages_list = [int(average) for average in averages_list]
+#         #Calculate percentage from quiz, store in list, and set new average for corresponding times table.
+#         percentage = int((score / 12) * 100)
+#         averages_list.append(percentage)
+#         new_average = int(sum(averages_list) / len(averages_list))
+#         setattr(user_question_overview, unique_avg, new_average)
+#         # Save new list of percentages to database.
+#         averages_json_format = json.dumps(averages_list)
+#         setattr(user_question_overview, unique_avg_list, averages_json_format)
+#         user_question_overview.save()
+#         context = {'quiz_percentage': percentage}
+#         return render(request, 'results.html', context)
+#     else:
+#         # GET request, build a quiz for user to complete.
+#         context = {'times_table': times_table_name, 'questions': questions}
+#         return render(request, 'times_table.html', context)

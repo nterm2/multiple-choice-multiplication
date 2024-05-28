@@ -107,10 +107,15 @@ def student_overview(request):
 
 @login_required
 def quiz_mode_preview(request):
-    times_tables = TimesTable.objects.all()
     user = request.user
-    context = {"times_tables": times_tables, "user": user}
+    context = {"user": user}
     return render(request, 'quiz_mode_preview.html', context=context)
+
+@login_required
+def practice_mode_preview(request):
+    times_tables = TimesTable.objects.all()
+    context = {'times_tables': times_tables}
+    return render(request, 'practice_mode_preview.html', context=context)
 
 @login_required
 def quiz_mode(request):

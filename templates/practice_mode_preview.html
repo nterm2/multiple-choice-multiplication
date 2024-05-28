@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Quiz Mode</h1>
+    <p>Test your knowledge by choosing a times table!</p>
+
+    {% if times_tables %}
+        <p>Click here to practice your:</p>
+        {% for times_table in times_tables %} 
+            <p><a href="#">{{times_table}} times table</a></p>
+        {% endfor %}
+    {% else %}
+        <p>Sorry, there currently aren't any times tables in our system. We are doing our best right now to resolve this issue.</p>
+    {% endif %}
+
+{% endblock content %}

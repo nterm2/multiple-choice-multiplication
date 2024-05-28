@@ -22,4 +22,5 @@ urlpatterns = [
     path('classroom-overview/<int:id>/', views.classroom_overview, name='classroom_overview'),
     path('student-overview/', views.student_overview, name='student_overview'),
     path('quiz-mode-preview/', views.quiz_mode_preview, name='quiz_mode_preview'),
+    path('practice-mode-preview/', views.practice_mode_preview, name='practice_mode_preview'),
 ]

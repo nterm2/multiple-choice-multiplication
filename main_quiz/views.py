@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import TimesTable, Question, QuestionOverview, Classroom
+from .models import TimesTable, Question, Classroom
 from . import int2string
 from django.contrib.auth.decorators import login_required
 import json
@@ -104,6 +104,13 @@ def student_overview(request):
     user = request.user
     context = {"user": user}
     return render(request, 'student_overview.html', context=context)
+
+@login_required
+def quiz_mode_preview(request):
+    times_tables = TimesTable.objects.all()
+    user = request.user
+    context = {"times_tables": times_tables, "user": user}
+    return render(request, 'quiz_mode_preview.html', context=context)
 
 @login_required
 def quiz_mode(request):

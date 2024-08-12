@@ -2,22 +2,30 @@
 
 {% block content %}
     <h1>{{ times_table }} Times Table Quiz</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for question in questions %}
+            <p>Question: {{ question.question_text }}</p>
+            <div>
+                <div>
+                    <input type="radio" name="{{question}}" value="{{question.options.0}}" id="option_0" required>
+                    <label for="option_0">{{question.options.0 }}</label>
+                </div>
+                <div>
+                    <input type="radio" name="{{question}}" value="{{question.options.1}}" id="option_1" required>
+                    <label for="option_1">{{question.options.1 }}</label>
+                </div>
+                <div>
+                    <input type="radio" name="{{question}}" value="{{question.options.2}}" id="option_2" required>
+                    <label for="option_2">{{question.options.2 }}</label>
+                </div>
+                <div>
+                    <input type="radio" name="{{question}}" value="{{question.options.3}}" id="option_3" required>
+                    <label for="option_3">{{question.options.3 }}</label>
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
 
-    {% for question in questions %}
-        <p>Question: {{ question.question_text }}</p>
-        <div>
-            <li>
-                {{question.options.0 }}
-            </li>
-            <li>
-                {{question.options.1 }}
-            </li>
-            <li>
-                {{question.options.2 }}
-            </li>
-            <li>
-                {{question.options.3 }}
-            </li>
-        </div>
-    {% endfor %}
 {% endblock content %}

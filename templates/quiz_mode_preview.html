@@ -5,8 +5,8 @@
 <h1>Practice Mode</h1>
 <p>Practice on your weakest topics!</p>
 
-<p>Hi {{ user.first_name }}, your weakest times table is your 1 times table.</p>
+<p>Hi {{ user.first_name }}, your weakest times table is your {{weakest_times_table.times_table }} times table.</p>
 
-<p><a href="{% url 'main_quiz:start_quiz' times_table.id %}">Click here to practice your 1 times table.</a></p>
+<p><a href="{% url 'main_quiz:start_quiz' weakest_times_table.times_table %}">Click here to practice your {{weakest_times_table.times_table }} times table.</a></p>
 
 {% endblock content %}

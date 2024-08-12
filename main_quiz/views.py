@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from .models import TimesTable, Question, Classroom, Submission
 from . import int2string
 from django.contrib.auth.decorators import login_required
-import json
 from .forms import ClassroomForm
 from authentication.models import StudentProfile
 import random
@@ -110,7 +109,25 @@ def student_overview(request):
 @login_required
 def quiz_mode_preview(request):
     user = request.user
-    context = {"user": user}
+    submissions = user.quiz_submissions.all()
+    if len(submissions) == 0 or len(submissions) == 1:
+        weakest_timestable = None 
+    else:
+        user_averages = {}
+        all_times_tables = TimesTable.objects.all()
+        for times_table in all_times_tables:
+            users_time_table_submissions = submissions.filter(timetable=times_table)
+            if len(users_time_table_submissions) != 0:
+                sum_of_scores = 0
+                for submission in users_time_table_submissions:
+                    sum_of_scores += submission.score
+                average = int(sum_of_scores / len(users_time_table_submissions))
+                user_averages[times_table] = average
+        user_averages = dict(sorted(user_averages.items(), key=lambda item: item[1]))
+        weakest_timestable = list(user_averages.keys())[0]
+                
+
+    context = {"user": user, 'weakest_times_table': weakest_timestable}
     return render(request, 'quiz_mode_preview.html', context=context)
 
 @login_required
@@ -118,21 +135,6 @@ def practice_mode_preview(request):
     times_tables = TimesTable.objects.all()
     context = {'times_tables': times_tables}
     return render(request, 'practice_mode_preview.html', context=context)
-
-@login_required
-def quiz_mode(request):
-    """Determine quiz with lowest percentage, and show this to the user."""
-    user_question_overview = QuestionOverview.objects.filter(owner=request.user)[0]
-    percentages = []
-    for i in range(1, 13):
-        current_times_table = int2string.int_to_string(i)
-        current_avg = f"{current_times_table}_avg"
-        current_percentage = getattr(user_question_overview, current_avg)
-        percentages.append(current_percentage)
-    weakest_times_table = percentages.index(min(percentages)) + 1
-
-    context = {'weakest_times_table': weakest_times_table}
-    return render(request, 'quiz_mode.html', context)
 
 @login_required
 def question_overview(request):

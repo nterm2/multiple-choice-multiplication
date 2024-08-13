@@ -139,8 +139,21 @@ def practice_mode_preview(request):
 @login_required
 def question_overview(request):
     """Show question overview for a single student"""
-    overview = QuestionOverview.objects.filter(owner=request.user)[0]
-    context = {'overview': overview}
+    user = request.user
+    submissions = user.quiz_submissions.all()
+    user_averages = {}
+    all_times_tables = TimesTable.objects.all()
+    for times_table in all_times_tables:
+        users_time_table_submissions = submissions.filter(timetable=times_table)
+        if len(users_time_table_submissions) != 0:
+            sum_of_scores = 0
+            for submission in users_time_table_submissions:
+                sum_of_scores += submission.score
+            average = int(sum_of_scores / len(users_time_table_submissions))
+            user_averages[times_table] = average
+        else: 
+            user_averages[times_table] = None 
+    context = {'overview': user_averages, 'user': request.user}
     return render(request, 'question_overview.html', context)
 
 

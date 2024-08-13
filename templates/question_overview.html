@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content%}
 
 <style>
@@ -8,59 +7,22 @@ table, th, td {
   }
   </style>
 
-<h3>Question overview for {{ user.username }}</h3>
+<h3>Question overview for {{ user.first_name }} {{ user.last_name }}</h3>
 <table>
     <tr>
         <th>Times Table</th>
         <th>Average Percentage</th>
     </tr>
-    <tr>
-        <td>{{ overview.one_times_table }}</td>
-        <td>{{ overview.one_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.two_times_table }}</td>
-        <td>{{ overview.two_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.three_times_table }}</td>
-        <td>{{ overview.three_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.four_times_table }}</td>
-        <td>{{ overview.four_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.five_times_table }}</td>
-        <td>{{ overview.five_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.six_times_table }}</td>
-        <td>{{ overview.six_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.seven_times_table }}</td>
-        <td>{{ overview.seven_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.eight_times_table }}</td>
-        <td>{{ overview.eight_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.nine_times_table }}</td>
-        <td>{{ overview.nine_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.ten_times_table }}</td>
-        <td>{{ overview.ten_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.eleven_times_table }}</td>
-        <td>{{ overview.eleven_avg}}%</td>
-    </tr>
-    <tr>
-        <td>{{ overview.twelve_times_table }}</td>
-        <td>{{ overview.twelve_avg}}%</td>
-    </tr>
+    {% for times_table, average_score in overview.items %}
+        <tr>
+            <td><a href="{% url 'main_quiz:start_quiz' times_table.times_table %}">{{ times_table.times_table }}</a></td>
+            {% if average_score %}
+                <td>{{ average_score }}%</td>
+            {% else %}
+                <td>-</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    
 </table>
 {% endblock content %}

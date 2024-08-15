@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import TimesTable, Question, Classroom, Submission
 from . import int2string
 from django.contrib.auth.decorators import login_required
-from .forms import ClassroomForm
+from .forms import ClassroomForm, JoinClassrooomForm
 from authentication.models import StudentProfile
 import random
 #Import Graphing Libraries
@@ -14,7 +14,8 @@ def index(request):
     return render(request, 'index.html')
 
 @login_required
-def all_leaderboards(request):
+def leaderboards(request):
+    student_classrooms = Classroom.objects.filter(request.user.student_profile)
     times_tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     context = {'times_tables': times_tables}
     return render(request, 'all_leaderboards.html', context)
@@ -96,7 +97,7 @@ def delete_classroom(request, id):
 @login_required
 def classroom_overview(request, id):
     classroom = Classroom.objects.get(id=id)
-    students = StudentProfile.objects.filter(classroom=classroom)
+    students = classroom.students.all()
     context = {'classroom': classroom, 'students': students}
     return render(request, 'classroom_overview.html', context=context)
 
@@ -156,6 +157,29 @@ def question_overview(request):
     context = {'overview': user_averages, 'user': request.user}
     return render(request, 'question_overview.html', context)
 
+@login_required
+def join_classroom(request):
+    if request.method == "POST":
+        form = JoinClassrooomForm(request.POST)
+        if form.is_valid():
+            classroom_code = form.cleaned_data["classroom_code"]
+            try:
+                class_to_join = Classroom.objects.get(classroom_code=classroom_code)
+            except Exception:
+                successfully_joined = False 
+            else:
+
+                successfully_joined = True
+            if successfully_joined:
+                class_to_join.students.add(request.user.student_profile)
+                context = {'successfully_joined': True, 'classroom_name': class_to_join.classroom_name}
+            else:
+                context = {'successfully_joined': False}
+            return render(request, 'join_classroom_results.html', context)
+    else:
+        form = JoinClassrooomForm()
+        context = {"form": form}
+    return render(request, "join_classroom.html", context)
 
 def generate_options(answer):
     """Returns list containing answer and three random, non-duplicate integers between range of 1-12 times tables (1-144)"""

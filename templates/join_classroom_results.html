@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if successfully_joined %}
+    <p>You have successfully joined {{ classroom_name }}</p>
+{% else %}
+    <p>Not able to find a classroom with this code. Please check the code you entered, and then <a href="{% url 'main_quiz:join_classroom'%}">try again</a>.</p>
+{% endif %}
+{% endblock content %}

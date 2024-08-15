@@ -31,6 +31,6 @@ class TeacherProfile(models.Model):
     
 class StudentProfile(models.Model):
     """Model used to represent profile for student"""
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    classroom = models.ForeignKey('main_quiz.Classroom', on_delete=models.SET_NULL, null=True, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile")
+    classrooms = models.ManyToManyField('main_quiz.Classroom', related_name="students", blank=True)
     

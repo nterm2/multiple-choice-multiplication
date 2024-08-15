@@ -5,8 +5,12 @@
 <h1>Practice Mode</h1>
 <p>Practice on your weakest topics!</p>
 
-<p>Hi {{ user.first_name }}, your weakest times table is your {{weakest_times_table.times_table }} times table.</p>
+{% if weakest_times_table %}
+    <p>Hi {{ user.first_name }}, your weakest times table is your {{weakest_times_table.times_table }} times table.</p>
 
-<p><a href="{% url 'main_quiz:start_quiz' weakest_times_table.times_table %}">Click here to practice your {{weakest_times_table.times_table }} times table.</a></p>
+    <p><a href="{% url 'main_quiz:start_quiz' weakest_times_table.times_table %}">Click here to practice your {{weakest_times_table.times_table }} times table.</a></p>
+{% else %}
+    <p>You currently don't have a weakest times table. Head over to the <a href="{% url 'main_quiz:practice_mode_preview' %}">quiz section</a> to be quizzed on new times tables.</p>
+{% endif %}
 
 {% endblock content %}

@@ -11,7 +11,8 @@
         <a href="{% url 'main_quiz:quiz_mode_preview' %}">Quiz Mode</a> - 
         <a href="{% url 'main_quiz:question_overview' %}">My Question Overview</a> -
         <a href="{% url 'main_quiz:teacher_overview' %}">Teacher Overview</a> -
-        <a href="{% url 'main_quiz:all_leaderboards' %}">All Leaderboards</a> -
+        <a href="{% url 'main_quiz:all_leaderboards' %}">Leaderboards</a> -
+        <a href="{% url 'main_quiz:join_classroom' %}">Join Classroom</a> - 
         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
         <form method="post" action="{% url 'account_logout' %}" id="logout-form">
           {% csrf_token %}
